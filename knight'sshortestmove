@@ -1,0 +1,136 @@
+
+package javaapplication4;
+
+/**
+ *These are som methods I wrote to complete a problem for the google foobar challenge
+ * @author William
+ */
+public class JavaApplication4 {
+    
+    public static boolean checkdone(int[][] board){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(board[i][j] == 0){
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+
+
+/**
+ * Tests to inputted number to make sure it lies whithing the bounds of the chessboard
+ * @param the number representing the possible position of a piece
+ * @return a boolean value indicating whether or not that position lies whithin the board
+**/
+    public static boolean inRange( int num){
+        return num >= 0 && num <= 7;
+        
+    }
+
+/**
+ * Determines how far each position is from a the knights current position, measured in number of moves
+ * @params the src variables represent the x and y positions on the chessboard, count represents how many moves have been made( starts at one but increases due to this function being
+	recursive), and the int array represents the board
+ * returns nothing but modifies the distances represented on the chess board
+**/
+    public static void filldistances(int srcx, int srcy, int count, int[][] board){
+        
+        
+        if((inRange(srcx +1)  && inRange(srcy -2 ))){
+            if(board[srcx+1][srcy-2] > count){    
+                board[srcx+1][srcy-2] = count;
+                filldistances(srcx+1,srcy-2,count+1,board);
+            }
+        }
+        if(inRange(srcx-1) && inRange(srcy -2)){
+            if(board[srcx-1][srcy-2] > count){
+                board[srcx-1][srcy-2] = count;
+                filldistances(srcx-1, srcy-2, count+1, board);
+            }
+        }
+        if(inRange(srcx +2) && inRange(srcy -1) ){
+            if(board[srcx+2][srcy-1] > count){
+                board[srcx+2][srcy-1] = count; 
+                filldistances(srcx+2, srcy-1, count +1, board);
+            }
+        }
+        if(inRange(srcx + 2) && inRange(srcy +1) ){
+            
+            if(board[srcx+2][srcy+1] > count){
+                board[srcx+2][srcy+1] = count;
+                filldistances(srcx+2, srcy-1, count+1, board);
+        
+            }
+        }
+        if(inRange(srcx + 1) && inRange(srcy +2)){
+            if(board[srcx+1][srcy+2] > count){
+                board[srcx+1][srcy+2] = count;
+                filldistances(srcx+1, srcy +2, count+1, board);
+            }
+        }
+        if(inRange(srcx -1)&& inRange(srcy + 2) ){
+            if(board[srcx-1][srcy+2] > count ){
+                board[srcx-1][srcy+2] = count;
+                filldistances(srcx-1,srcy+2,count+1,board);
+            }
+        }
+        if(inRange(srcx -2) && inRange(srcy +1) ){
+            if(board[srcx-2][srcy+1] > count){
+                board[srcx-2][srcy+1] = count;
+                filldistances(srcx-2,srcy+1,count+1, board);
+            }
+        }
+        if(inRange(srcx -2) && inRange(srcy -1)){
+            if(board[srcx-2][srcy-1] > count){
+                board[srcx-2][srcy-1] = count;
+                filldistances(srcx-2,srcy-1, count +1, board);
+            }
+        }
+        
+        
+    }
+
+    //this function returns the board with all the filled distances
+    public static int answer(int src, int dst){
+        //create chess board
+        int[][] board = new int[8][8];
+        
+        //set all values equal to 0
+        for(int i = 0; i < 8; i ++){
+            for(int j = 0; j < 8; j++){
+                board[i][j] = 100;
+            }
+        }
+        //convert src to xy coordinates
+        int srcx = src%8;
+        int srcy = src/8;
+        
+        board[srcx][srcy] = 0;
+        //keep track of distance
+        int movecount = 1;
+        
+        filldistances(srcx,srcy,movecount,board);
+        
+        for(int i = 0; i < 8; i ++){
+            for(int j = 0; j < 8; j++){
+                System.out.print(board[j][i] +" ");
+            }
+            System.out.print("\n");
+        }
+        
+        
+        int dstx = dst%8;
+        int dsty = dst/8;
+        return board[dstx][dsty];
+        
+    }
+    
+    
+    public static void main(String[] args) {
+        System.out.print("hi");    }
+    
+}
